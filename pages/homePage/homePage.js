@@ -3,16 +3,15 @@ import React from 'react'
 import { auth } from '../../firebase'
 import { useNavigation } from '@react-navigation/native'
 import Card from './components/card'
+import { listItems } from '../../const/services'
 
 
-const HomePage = () => {
-  const navigation = useNavigation();
+const HomePage = ({ navigation }) => {
 
-  const listServicesCar=["teste","teste","teste","teste","teste","teste",]
 
-  const goSheduling = (props) => {
+  const goSheduling = (listService) => {
     navigation.navigate("Sheduling", {
-      listItems: props.listServicesCar
+      listItems: listService
     })
   }
   const handleSingOut = () => {
@@ -29,28 +28,28 @@ const HomePage = () => {
     <View style={styles.homePageView}>
       <View style={styles.cards}>
         <TouchableOpacity
-          onPress={goSheduling(listServicesCar)}>
+          onPress={() => goSheduling(listItems)}>
           <Card
             imageUrl="https://revistacarro.com.br/wp-content/uploads/2021/06/Fiat-Pulse_1.jpg"
             nameCard="Carros"
           />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={goSheduling}>
+          onPress={goSheduling}>
           <Card
             imageUrl="https://cdn.pixabay.com/photo/2016/11/22/23/47/dirt-road-1851258__340.jpg"
             nameCard="Motos"
           />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={goSheduling}>
+          onPress={goSheduling}>
           <Card
             imageUrl="https://images.pexels.com/photos/69118/pexels-photo-69118.jpeg?auto=compress&cs=tinysrgb&w=1600"
             nameCard="Bicicletas"
           />
         </TouchableOpacity>
         <TouchableOpacity
-        onPress={goSheduling}>
+          onPress={goSheduling}>
           <Card
             imageUrl="https://images.pexels.com/photos/4996777/pexels-photo-4996777.jpeg?auto=compress&cs=tinysrgb&w=1600"
             nameCard="Diversos"
