@@ -7,6 +7,14 @@ import Card from './components/card'
 
 const HomePage = () => {
   const navigation = useNavigation();
+
+  const listServicesCar=["teste","teste","teste","teste","teste","teste",]
+
+  const goSheduling = (props) => {
+    navigation.navigate("Sheduling", {
+      listItems: props.listServicesCar
+    })
+  }
   const handleSingOut = () => {
     auth
       .signOut()
@@ -20,15 +28,36 @@ const HomePage = () => {
   return (
     <View style={styles.homePageView}>
       <View style={styles.cards}>
-        <Card
-          imageUrl="https://revistacarro.com.br/wp-content/uploads/2021/06/Fiat-Pulse_1.jpg"
-        />
+        <TouchableOpacity
+          onPress={goSheduling(listServicesCar)}>
+          <Card
+            imageUrl="https://revistacarro.com.br/wp-content/uploads/2021/06/Fiat-Pulse_1.jpg"
+            nameCard="Carros"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={goSheduling}>
+          <Card
+            imageUrl="https://cdn.pixabay.com/photo/2016/11/22/23/47/dirt-road-1851258__340.jpg"
+            nameCard="Motos"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={goSheduling}>
+          <Card
+            imageUrl="https://images.pexels.com/photos/69118/pexels-photo-69118.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            nameCard="Bicicletas"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={goSheduling}>
+          <Card
+            imageUrl="https://images.pexels.com/photos/4996777/pexels-photo-4996777.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            nameCard="Diversos"
+          />
+        </TouchableOpacity>
       </View>
 
-
-      {/* <TouchableOpacity style={styles.buttonSingOut} onPress={handleSingOut}>
-        <Text style={styles.textSingOut}>Deslogar</Text>
-      </TouchableOpacity> */}
     </View>
   )
 }
@@ -38,12 +67,11 @@ export default HomePage
 const styles = StyleSheet.create({
   homePageView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
   },
   cards: {
-    padding: 15,
-    width: "100%",
-    height: "30%",
+    flex: 0.25,
+    padding: 5,
+    margin: 10,
+    justifyContent: 'space-between'
   }
-})
+})  
