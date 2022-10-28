@@ -1,13 +1,26 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import{Picker} from '@react-native-picker/picker'
+import React, { useState } from 'react'
+import { Picker } from '@react-native-picker/picker';
+
 
 export default function Sheduling({ route }) {
-    const listItems = route.params;
+    const [service, setService] = useState("Selecione um Serviço")
+    const { listItems } = route.params;
     return (
-        <Picker style={styles.pickerContainer}>
-            {listItems.forEach((item) =><Picker.Item key={item.index} value={item.value} label={item.value}/>)}
-        </Picker>
+        <View>
+            <Picker
+                selectedValue={service}
+                onValueChange={(item, index) => {
+                    setService(item)
+                }}
+                style={styles.pickerContainer}>
+                {listItems.map((item) => <Picker.Item key={item.id} value={item.service} label={item.service} />)}
+            </Picker>
+            <View>
+                
+            </View>
+        </View>
+
     )
 }
 
