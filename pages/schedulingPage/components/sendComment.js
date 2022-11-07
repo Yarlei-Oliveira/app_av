@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderColor: "black",
         padding: 10,
-        borderWidth: 2
+        borderWidth: 2,
     },
     feedbackSection: {
         alignItems: 'flex-end'
