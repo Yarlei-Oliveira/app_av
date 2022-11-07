@@ -41,7 +41,7 @@ const SendComment = () => {
                     value={comment}
                     multiline={true}
                     onChangeText={text => setComent(text)}
-                    placeholder="Deixe o seu Comentario"
+                    placeholder="Deixe o seu Comentari"
                 />
             </KeyboardAvoidingView>
             <View style={styles.feedbackSection}>
@@ -110,4 +110,5 @@ const styles = StyleSheet.create({
     likeAndDislike: {
         flexDirection: 'row'
     },
-})
+
+}) 
