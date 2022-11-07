@@ -7,6 +7,7 @@ import { servicesCars } from '../../const/var'
 
 const HomePage = ({ navigation }) => {
 
+
   const goSheduling = (listServices) => {
     navigation.navigate("Sheduling", {
       listItems: listServices

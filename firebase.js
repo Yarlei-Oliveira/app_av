@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
 import { getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -14,11 +15,13 @@ const firebaseConfig = {
     storageBucket: "trabalhoav1react.appspot.com",
     messagingSenderId: "876060023449",
     appId: "1:876060023449:web:3c6b4fcf61b8a66ea0f608",
-    measurementId: "G-QF9ZKS6SEZ"
+    measurementId: "G-QF9ZKS6SEZ",
+    databaseURL: "https://trabalhoav1react-default-rtdb.firebaseio.com/",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const database = getDatabase(app);
 
-export { auth };
+export { auth, database };
