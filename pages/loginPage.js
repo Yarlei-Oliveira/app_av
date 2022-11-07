@@ -2,19 +2,20 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
-import { useNavigation } from '@react-navigation/native'
 
+let userEmail = "";
 
-const LoginPage = () => {
+const LoginPage = ({navigation}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
 
     //Registrar
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredentials) => {
-                const user = userCredentials.user;
-                console.log(user.email);
+                userEmail = userCredentials.user;
+                console.log(userEmail.email);
             })
             .catch((error) =>
                 alert(error.message),
@@ -25,8 +26,8 @@ const LoginPage = () => {
     const handleSignin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user.email)
+                userEmail = userCredential.user.email;
+                console.log(userEmail)
             })
             .catch((error) => {
                 alert(error.message)
@@ -34,7 +35,6 @@ const LoginPage = () => {
             });
     }
     //go Home
-    const navigation = useNavigation()
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -97,6 +97,8 @@ const LoginPage = () => {
         </KeyboardAvoidingView>
     )
 }
+
+export { userEmail }
 
 export default LoginPage
 

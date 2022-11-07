@@ -1,17 +1,26 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { auth } from '../../firebase'
-import { useNavigation } from '@react-navigation/native'
 import Card from './components/card'
+<<<<<<< HEAD
 import { listItems } from '../../const/services'
+=======
+import { servicesCars } from '../../const/var'
+>>>>>>> 4e4744036c494a5a8be4a7bb104e475b94348d48
 
 
 const HomePage = ({ navigation }) => {
 
 
+<<<<<<< HEAD
   const goSheduling = (listService) => {
     navigation.navigate("Sheduling", {
       listItems: listService
+=======
+  const goSheduling = (listServices) => {
+    navigation.navigate("Sheduling", {
+      listItems: listServices
+>>>>>>> 4e4744036c494a5a8be4a7bb104e475b94348d48
     })
   }
   const handleSingOut = () => {
@@ -28,7 +37,11 @@ const HomePage = ({ navigation }) => {
     <View style={styles.homePageView}>
       <View style={styles.cards}>
         <TouchableOpacity
+<<<<<<< HEAD
           onPress={() => goSheduling(listItems)}>
+=======
+          onPress={() => goSheduling(servicesCars)}>
+>>>>>>> 4e4744036c494a5a8be4a7bb104e475b94348d48
           <Card
             imageUrl="https://revistacarro.com.br/wp-content/uploads/2021/06/Fiat-Pulse_1.jpg"
             nameCard="Carros"
