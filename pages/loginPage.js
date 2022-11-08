@@ -1,29 +1,35 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 
 var user = "";
 
-const LoginPage = ({navigation}) => {
+const LoginPage = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [isRegister, setIsRegister] = useState(false)
 
     //Registrar
     const handleSignUp = () => {
+        if (email === "" || email === null || password === "" || password === null) return alert("Algum dos campos esta nulo")
+        if (password !== confirmPassword) return alert("Senhas não batem")
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredentials) => {
                 user = userCredentials.user;
                 console.log(user.email);
             })
-            .catch((error) =>
-                alert(error.message),
-                console.log(error.message))
+            .catch((e) => {
+                alert(e.message)
+                console.log(e.message)
+            }
+            )
     }
     //Login
 
     const handleSignin = () => {
+        if (email === "" || email === null || password === "" || password === null) return alert("Algum dos campos esta nulo")
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 user = userCredential.user;
@@ -49,11 +55,10 @@ const LoginPage = ({navigation}) => {
 
     return (
         <KeyboardAvoidingView
-            style={styles.container}
-        >
+            style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.textHeader}>
-                    Login
+                    {isRegister ? "Registrar" : "Login"}
                 </Text>
             </View>
             <View style={styles.inputContainer}>
@@ -64,33 +69,36 @@ const LoginPage = ({navigation}) => {
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="Password"
+                    placeholder="Senha"
                     value={password}
                     onChangeText={text => setPassword(text)}
                     style={styles.input}
                     secureTextEntry
                 />
+                {isRegister && <TextInput
+                    placeholder="Confirmar senha"
+                    value={confirmPassword}
+                    onChangeText={text => setConfirmPassword(text)}
+                    style={styles.input}
+                    secureTextEntry
+                />}
             </View>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={handleSignUp}
-                    style={[styles.button, styles.buttonOutline]}
-                >
+                    onPress={() => setIsRegister(!isRegister)}
+                    style={[styles.button, styles.buttonOutline]}>
                     <Text
-                        style={styles.buttonText}
-                    >
-                        Registrar
+                        style={styles.buttonText}>
+                        {isRegister ? "Login" : "Cadastrar"}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={handleSignin}
-                    style={styles.button}
-                >
+                    onPress={() => isRegister ? handleSignUp() : handleSignin()}
+                    style={styles.button}>
                     <Text
-                        style={styles.buttonText}
-                    >
-                        Entrar
+                        style={styles.buttonText}>
+                        {isRegister ? "Registrar" : "Entrar"}
                     </Text>
                 </TouchableOpacity>
             </View>
