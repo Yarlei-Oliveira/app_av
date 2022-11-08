@@ -25,13 +25,15 @@ const SendComment = (props) => {
     }
 
     function writeUserData(comment) {
-        set(ref(database, props.local + "/listComments" + "/" + date), {
-            email: user.email,
-            comment: comment,
-            feedback: feedBack,
-            date: date
+        const currentDate = new Date()
+        const data = currentDate.getDate() + '|' + (currentDate.getMonth() + 1) + "|" + currentDate.getFullYear() + "?" + currentDate.getHours() + ":" + currentDate.getMinutes();
+            set(ref(database, "local/" + props.local + "/listComments" + "/" + data), {
+                email: user.email,
+                comment: comment,
+                feedback: feedBack,
+                date: data
 
-        });
+            });
     }
     return (
         <View>

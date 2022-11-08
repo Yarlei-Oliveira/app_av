@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, ScrollView, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import { ref, onValue } from "firebase/database";
 import { database } from '../../../firebase';
 import CardComment from './cardComment';
@@ -8,7 +8,7 @@ const CommentSection = (props) => {
     var commentsAux = []
     const [comments, setComments] = useState([])
 
-    const dbRef = ref(database, props.local + "/listComments");
+    const dbRef = ref(database, "local/" + props.localId + "/listComments");
     onValue(dbRef, (data) => {
         if (!data.exists()) {
         }

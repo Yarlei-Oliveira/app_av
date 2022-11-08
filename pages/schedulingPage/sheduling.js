@@ -21,7 +21,7 @@ export default function Sheduling({ route }) {
                         setLocalce(item)
                     }}
                     style={styles.pickerContainer}>
-                    {Locale.map((item) => <Picker.Item key={item.idLocal} value={item.local} label={item.local} />)}
+                    {Locale.map((item) => <Picker.Item key={item.idLocal} value={item.idLocal} label={item.local} />)}
                 </Picker>
                 <Picker
                     selectedValue={service}
@@ -34,11 +34,11 @@ export default function Sheduling({ route }) {
             </View>
             <View>
                 {locale !== "" && service !== "" && locale !== "Escolha um local" && service !== "Escolha um serviço"
-                    && <Agendamento local={locale} service={service} />}
+                    && <Agendamento localId={Locale[locale].local} service={service} />}
             </View>
             <View style={styles.commentSectionContainer}>
                 {locale !== "" && locale !== "Escolha um local" && <SendComment local={locale} />}
-                {locale !== "" && locale !== "Escolha um local" && <CommentSection local={locale} />}
+                {locale !== "" && locale !== "Escolha um local" && <CommentSection localId={locale} />}
             </View>
         </View>
     )

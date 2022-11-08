@@ -43,11 +43,12 @@ export default function Agendamento(props) {
     }
 
     function writeUserData() {
-        const dataAgendada = data + horario
-        set(ref(database, props.local + "/listAgendamentos/" + data + "/" + horario), {
+        const dataAgendada = data + "?" + horario
+        set(ref(database, "agendamento/" + dataAgendada), {
             userId: user.uid,
             dateMarcado: dataAgendada,
             dateRetirada: horarioRetirada,
+            Local: props.localId,
             service: props.service
         });
         resetState();
