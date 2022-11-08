@@ -3,11 +3,11 @@ import { IconButton } from 'react-native-paper';
 import React, { useState } from 'react'
 import { ref, set } from "firebase/database";
 import { database } from '../../../firebase';
-import { userEmail } from '../../loginPage';
+import { user } from '../../loginPage';
 
 
 
-const SendComment = () => {
+const SendComment = (props) => {
     const [comment, setComent] = useState("")
     const [feedBack, setFeedBack] = useState({
         like: false,
@@ -25,11 +25,12 @@ const SendComment = () => {
     }
 
     function writeUserData(comment) {
-        set(ref(database, 'feedBack/' + date), {
-            email: userEmail,
+        set(ref(database, props.local + "/listComments" + "/" + date), {
+            email: user.email,
             comment: comment,
             feedback: feedBack,
             date: date
+
         });
     }
     return (

@@ -14,7 +14,7 @@ export default function Sheduling({ route }) {
 
     return (
         <View style={styles.shedulingContainer}>
-            <View>
+            <View style={styles.shedullingPicker}>
                 <Picker
                     selectedValue={locale}
                     onValueChange={(item, index) => {
@@ -23,8 +23,6 @@ export default function Sheduling({ route }) {
                     style={styles.pickerContainer}>
                     {Locale.map((item) => <Picker.Item key={item.idLocal} value={item.local} label={item.local} />)}
                 </Picker>
-            </View>
-            <View>
                 <Picker
                     selectedValue={service}
                     onValueChange={(item, index) => {
@@ -35,11 +33,12 @@ export default function Sheduling({ route }) {
                 </Picker>
             </View>
             <View>
-                <Agendamento local={locale} service={service} />
+                {locale !== "" && service !== "" && locale !== "Escolha um local" && service !== "Escolha um serviço"
+                    && <Agendamento local={locale} service={service} />}
             </View>
             <View style={styles.commentSectionContainer}>
-                <SendComment />
-                <CommentSection />
+                {locale !== "" && locale !== "Escolha um local" && <SendComment local={locale} />}
+                {locale !== "" && locale !== "Escolha um local" && <CommentSection local={locale} />}
             </View>
         </View>
     )
@@ -50,10 +49,14 @@ const styles = StyleSheet.create({
     shedulingContainer: {
         width: "100%",
         height: "100%",
+        justifyContent: 'space-between',
         padding: 10,
     },
+    shedullingPicker: {
+    },
     commentSectionContainer: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-start',
+        height: "50%",
     },
 
 })

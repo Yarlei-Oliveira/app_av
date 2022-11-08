@@ -14,7 +14,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-        <Stack.Screen name="Sheduling" component={Sheduling} />
+        <Stack.Screen name="Sheduling" component={Sheduling} options={{title: "Agendamento"}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

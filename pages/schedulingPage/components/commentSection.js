@@ -4,11 +4,11 @@ import { ref, onValue } from "firebase/database";
 import { database } from '../../../firebase';
 import CardComment from './cardComment';
 
-const CommentSection = () => {
+const CommentSection = (props) => {
     var commentsAux = []
     const [comments, setComments] = useState([])
 
-    const dbRef = ref(database, 'feedBack/');
+    const dbRef = ref(database, props.local + "/listComments");
     onValue(dbRef, (data) => {
         if (!data.exists()) {
         }
@@ -44,6 +44,7 @@ export default CommentSection
 const styles = StyleSheet.create({
     commentSection: {
         width: "100%",
-        height: "50%"
+        height: "60%",
+        marginBottom: 15,
     },
 }) 

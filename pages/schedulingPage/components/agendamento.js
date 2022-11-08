@@ -4,29 +4,37 @@ import { IconButton } from 'react-native-paper';
 import React, { useState } from 'react'
 import { database } from '../../../firebase';
 import { ref, set } from "firebase/database";
+import { user } from "../../loginPage"
 
 export default function Agendamento(props) {
     const [date, setDate] = useState(new Date())
     const [mode, setMode] = useState('date')
     const [show, setShow] = useState(false)
-    const [text, setText] = useState("Empty")
-    const [horarioRetirada, sethorarioRetirada] = useState("Empty")
 
+    const [data, setData] = useState("")
+    const [horario, setHorario] = useState("")
+    const [horarioRetirada, setHorarioRetirada] = useState("")
 
 
     const onChange = (Event, selectedDate) => {
-
         const currentDate = selectedDate || date
         setShow(Platform.OS === 'ios');
         setDate(currentDate)
 
 
-        let fDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + "/" + currentDate.getFullYear();
-        let fTime = 'Horario: ' + currentDate.getHours() + ":" + currentDate.getMinutes()
+        let fDate = currentDate.getDate() + '|' + (currentDate.getMonth() + 1) + "|" + currentDate.getFullYear();
+        let fTime = currentDate.getHours() + ":" + currentDate.getMinutes()
 
 
-        sethorarioRetirada(currentDate.getHours() + 1 + ":" + currentDate.getMinutes())
-        setText(fDate + " | " + fTime)
+        setHorarioRetirada(currentDate.getHours() + 1 + ":" + currentDate.getMinutes())
+        setData(fDate)
+        setHorario(fTime)
+    }
+
+    function resetState() {
+        setData("")
+        setHorario("")
+        setHorarioRetirada("")
     }
 
     const showMode = (currentMode) => {
@@ -35,31 +43,39 @@ export default function Agendamento(props) {
     }
 
     function writeUserData() {
-        set(ref(database, props.local + "/"), {
-            dateMarcado: date.toString(),
+        const dataAgendada = data + horario
+        set(ref(database, props.local + "/listAgendamentos/" + data + "/" + horario), {
+            userId: user.uid,
+            dateMarcado: dataAgendada,
             dateRetirada: horarioRetirada,
             service: props.service
         });
+        resetState();
     }
     return (
-        <View style={styles.dateSetContainer}>
-            <View>
-                <Text style={styles.dateSetText}>Data marcada para {text}</Text>
-                <Text style={styles.dateSetText}>Horario de retirada:  {horarioRetirada}</Text>
-            </View>
+        <View>
             <View style={styles.dateContainer}>
-                <IconButton
-                    icon={"calendar-month"}
-                    onPress={() => showMode("date")}
-                />
-                <IconButton
-                    icon={"chevron-down-circle"}
-                    onPress={() => showMode("time")}
-                />
-                <IconButton
-                    icon={"send"}
-                    onPress={() => writeUserData()}
-                />
+                <View style={styles.shedulingRow}>
+                    <Text style={styles.dateSetText}>Data marcada para: {data}</Text>
+                    <IconButton
+                        icon={"calendar-month"}
+                        onPress={() => showMode("date")}
+                    />
+                </View>
+                <View style={styles.shedulingRow}>
+                    <Text style={styles.dateSetText}>Horario marcada para: {horario}</Text>
+                    <IconButton
+                        icon={"chevron-down-circle"}
+                        onPress={() => showMode("time")}
+                    />
+                </View>
+                <View style={[styles.sendButton, styles.shedulingRow]}>
+                    <Text style={styles.dateSetText}>Horario de retirada:  {horarioRetirada}</Text>
+                    <IconButton
+                        icon={"send"}
+                        onPress={() => writeUserData()}
+                    />
+                </View>
             </View>
             <View>
                 {show && (
@@ -87,7 +103,6 @@ export default function Agendamento(props) {
                     />
                 )}
             </View>
-
         </View>
     )
 }
@@ -95,11 +110,15 @@ export default function Agendamento(props) {
 const styles = StyleSheet.create({
     dateContainer: {
         padding: 10,
-        flexDirection: 'row',
-        alignItems: 'center'
     },
-    dateSetContainer: {
-        padding: 10,
+    sendButton: {
+        alignItems: "flex-end",
+
+    },
+    shedulingRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: 'space-between'
     },
     dateSetText: {
         color: "black"

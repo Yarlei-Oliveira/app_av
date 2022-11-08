@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { auth } from '../firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 
-let userEmail = "";
+var user = "";
 
 const LoginPage = ({navigation}) => {
     const [email, setEmail] = useState('')
@@ -14,8 +14,8 @@ const LoginPage = ({navigation}) => {
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredentials) => {
-                userEmail = userCredentials.user;
-                console.log(userEmail.email);
+                user = userCredentials.user;
+                console.log(user.email);
             })
             .catch((error) =>
                 alert(error.message),
@@ -26,8 +26,8 @@ const LoginPage = ({navigation}) => {
     const handleSignin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                userEmail = userCredential.user.email;
-                console.log(userEmail)
+                user = userCredential.user;
+                console.log(user)
             })
             .catch((error) => {
                 alert(error.message)
@@ -98,7 +98,7 @@ const LoginPage = ({navigation}) => {
     )
 }
 
-export { userEmail }
+export { user }
 
 export default LoginPage
 
