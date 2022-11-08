@@ -10,7 +10,7 @@ export default function Sheduling({ route }) {
     const [locale, setLocalce] = useState("")
     const [service, setService] = useState("")
 
-    const { listItems } = route.params;
+    const { listItems, type } = route.params;
 
     return (
         <View style={styles.shedulingContainer}>
@@ -34,11 +34,11 @@ export default function Sheduling({ route }) {
             </View>
             <View>
                 {locale !== "" && service !== "" && locale !== "Escolha um local" && service !== "Escolha um serviço"
-                    && <Agendamento localId={Locale[locale].local} service={service} />}
+                    && <Agendamento localId={Locale[locale].local} service={service} type={type} />}
             </View>
             <View style={styles.commentSectionContainer}>
-                {locale !== "" && locale !== "Escolha um local" && <SendComment local={locale} />}
-                {locale !== "" && locale !== "Escolha um local" && <CommentSection localId={locale} />}
+                {locale !== "" && locale !== "Escolha um local" && <SendComment local={locale} type={type} />}
+                {locale !== "" && locale !== "Escolha um local" && <CommentSection localId={locale} type={type} />}
             </View>
         </View>
     )

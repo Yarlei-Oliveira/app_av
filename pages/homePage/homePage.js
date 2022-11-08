@@ -8,8 +8,9 @@ import { servicesCars } from '../../const/var'
 const HomePage = ({ navigation }) => {
 
 
-  const goSheduling = (listServices) => {
+  const goSheduling = (listServices, type) => {
     navigation.navigate("Sheduling", {
+      type: type,
       listItems: listServices
     })
   }
@@ -27,28 +28,28 @@ const HomePage = ({ navigation }) => {
     <View style={styles.homePageView}>
       <View style={styles.cards}>
         <TouchableOpacity
-          onPress={() => goSheduling(servicesCars)}>
+          onPress={() => goSheduling(servicesCars, "Carros")}>
           <Card
             imageUrl="https://revistacarro.com.br/wp-content/uploads/2021/06/Fiat-Pulse_1.jpg"
             nameCard="Carros"
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={goSheduling}>
+          onPress={() => goSheduling(servicesCars, "Motos")}>
           <Card
             imageUrl="https://cdn.pixabay.com/photo/2016/11/22/23/47/dirt-road-1851258__340.jpg"
             nameCard="Motos"
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={goSheduling}>
+          onPress={() => goSheduling(servicesCars, "Bicicletas")}>
           <Card
             imageUrl="https://images.pexels.com/photos/69118/pexels-photo-69118.jpeg?auto=compress&cs=tinysrgb&w=1600"
             nameCard="Bicicletas"
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={goSheduling}>
+          onPress={() => goSheduling(servicesCars, "Diversos")}>
           <Card
             imageUrl="https://images.pexels.com/photos/4996777/pexels-photo-4996777.jpeg?auto=compress&cs=tinysrgb&w=1600"
             nameCard="Diversos"

@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginPage from './pages/loginPage';
 import HomePage from './pages/homePage/homePage';
 import Sheduling from './pages/schedulingPage/sheduling';
-import ShedulingList from './pages/homePage/components/drawer/shedulingList';
+import ShedulingList from './pages/homePage/components/drawer/shedulingList/shedulingList';
 import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
 
@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator();
 
 const Stack = createNativeStackNavigator();
 
-function logOut(){
+function LogOut(){
   signOut(auth)
 }
 
@@ -25,7 +25,7 @@ function Root() {
     <Drawer.Navigator initialRouteName='Home'>
       <Drawer.Screen name="Home" component={HomePage} options={{ headerTitleAlign: "center", }} />
       <Drawer.Screen name="ShedulingList" component={ShedulingList} options={{ headerTitleAlign: "center", title:"Agendados" }}/>
-      <Drawer.Screen name="Sair" component={logOut}/>
+      <Drawer.Screen name="Sair" component={LogOut}/>
     </Drawer.Navigator>
   );
 }
