@@ -2,15 +2,17 @@ import { StyleSheet, Text, View, Platform } from 'react-native'
 import DatePicker from '@react-native-community/datetimepicker';
 import { IconButton } from 'react-native-paper';
 import React, { useState } from 'react'
+import { database } from '../../../firebase';
+import { ref, set } from "firebase/database";
 
-export default function Agendamento() {
+export default function Agendamento(props) {
     const [date, setDate] = useState(new Date())
     const [mode, setMode] = useState('date')
     const [show, setShow] = useState(false)
     const [text, setText] = useState("Empty")
     const [horarioRetirada, sethorarioRetirada] = useState("Empty")
 
-  
+
 
     const onChange = (Event, selectedDate) => {
 
@@ -31,6 +33,14 @@ export default function Agendamento() {
         setShow(true);
         setMode(currentMode);
     }
+
+    function writeUserData() {
+        set(ref(database, props.local + "/"), {
+            dateMarcado: date.toString(),
+            dateRetirada: horarioRetirada,
+            service: props.service
+        });
+    }
     return (
         <View style={styles.dateSetContainer}>
             <View>
@@ -46,31 +56,38 @@ export default function Agendamento() {
                     icon={"chevron-down-circle"}
                     onPress={() => showMode("time")}
                 />
-            </View>
-            {show && (
-                <DatePicker
-                    style={styles.calendar}
-                    format="DD/MM/YYYY"
-                    placeholder={"Selecione uma Data"}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    date={date}
-                    value={date}
-                    mode={mode}
-                    onChange={onChange}
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0,
-                        },
-                        dateInput: {
-                            marginLeft: 36,
-                        },
-                    }}
+                <IconButton
+                    icon={"send"}
+                    onPress={() => writeUserData()}
                 />
-            )}
+            </View>
+            <View>
+                {show && (
+                    <DatePicker
+                        style={styles.calendar}
+                        format="DD/MM/YYYY"
+                        placeholder={"Selecione uma Data"}
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        date={date}
+                        value={date}
+                        mode={mode}
+                        onChange={onChange}
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0,
+                            },
+                            dateInput: {
+                                marginLeft: 36,
+                            },
+                        }}
+                    />
+                )}
+            </View>
+
         </View>
     )
 }

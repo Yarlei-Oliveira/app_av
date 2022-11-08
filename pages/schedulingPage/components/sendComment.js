@@ -25,7 +25,6 @@ const SendComment = () => {
     }
 
     function writeUserData(comment) {
-
         set(ref(database, 'feedBack/' + date), {
             email: userEmail,
             comment: comment,

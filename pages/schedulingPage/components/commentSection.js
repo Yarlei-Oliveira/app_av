@@ -5,16 +5,15 @@ import { database } from '../../../firebase';
 import CardComment from './cardComment';
 
 const CommentSection = () => {
-    var comments = []
+    var commentsAux = []
+    const [comments, setComments] = useState([])
 
     const dbRef = ref(database, 'feedBack/');
     onValue(dbRef, (data) => {
         if (!data.exists()) {
-            console.log("Sem items no dataset")
-            return;
         }
         data.forEach((element) => {
-            comments.push({
+            commentsAux.push({
                 id: element.key,
                 date: element.val().date,
                 comment: element.val().comment,
@@ -22,15 +21,16 @@ const CommentSection = () => {
                 feedback: element.val().feedback
             })
         })
+        setComments(commentsAux.reverse())
     }, { onlyOnce: true });
-    comments.reverse();
     return (
         <View style={styles.commentSection}>
             <ScrollView>
-                {comments !== null && comments.map((item) => <CardComment
+                {comments.length > 0 && comments.map((item) => <CardComment
                     key={item["id"]}
                     email={item["email"]}
                     comment={item["comment"]}
+                    date={item["date"]}
                     isLike={item["feedback"].like}
                     isDisLike={item["feedback"].disLike}
                 />)}

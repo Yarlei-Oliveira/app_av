@@ -20,5 +20,18 @@ const servicesCars = [{
 },
 ]
 
+const Locale = [{
+    local: "local 1",
+    idLocal: 1
+},
+{
+    local: "local 2",
+    idLocal: 2
+},
+{
+    local: "local 3",
+    idLocal: 3
+},
+]
 
-export { servicesCars };
+export { servicesCars, Locale };

@@ -25,7 +25,7 @@ const CardComment = (props) => {
         </View>
       </View>
       <View key={props.key}>
-        <Text key={props.key}>{props.comment}</Text>
+        <Text key={props.key} style={styles.textStyleComment}>{props.comment}</Text>
       </View>
     </View>
   )
@@ -36,6 +36,9 @@ export default CardComment
 const styles = StyleSheet.create({
   commentCardContainer: {
     padding: 10
+  },
+  textStyleComment:{
+    fontSize: 15
   },
   commentCardHearder: {
     flexDirection: 'row',
