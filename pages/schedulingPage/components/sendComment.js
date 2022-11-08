@@ -27,13 +27,13 @@ const SendComment = (props) => {
     function writeUserData(comment) {
         const currentDate = new Date()
         const data = currentDate.getDate() + '|' + (currentDate.getMonth() + 1) + "|" + currentDate.getFullYear() + "?" + currentDate.getHours() + ":" + currentDate.getMinutes();
-            set(ref(database, "local/" + props.local + "/listComments" + "/" + data), {
-                email: user.email,
-                comment: comment,
-                feedback: feedBack,
-                date: data
+        set(ref(database, "local/" + props.local + "/listComments" + "/" + data), {
+            email: user.email,
+            comment: comment,
+            feedback: feedBack,
+            date: data
 
-            });
+        });
     }
     return (
         <View>
@@ -43,10 +43,11 @@ const SendComment = (props) => {
                     value={comment}
                     multiline={true}
                     onChangeText={text => setComent(text)}
-                    placeholder="Deixe o seu Comentari"
+                    placeholder="Deixe o seu Comentario"
                 />
             </KeyboardAvoidingView>
             <View style={styles.feedbackSection}>
+
                 <View style={styles.likeAndDislike}>
                     <IconButton
                         icon={
@@ -74,6 +75,7 @@ const SendComment = (props) => {
                         style={styles.sendButton}
                         icon={"send"}
                         onPress={() => {
+                            if (comment === "") return alert("Comentario vazio")
                             resetSendComment()
                             writeUserData(comment)
                         }}
