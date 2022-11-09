@@ -8,24 +8,43 @@ import Sheduling from './pages/schedulingPage/sheduling';
 import ShedulingList from './pages/homePage/components/drawer/shedulingList/shedulingList';
 import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
-
-
+import { ref, onValue } from "firebase/database";
+import { database } from './firebase';
+import { user } from './pages/loginPage';
+import AuthorizationPage from './pages/homePage/components/drawer/authorization/authorizationPage';
 
 
 const Drawer = createDrawerNavigator();
-
 const Stack = createNativeStackNavigator();
 
-function LogOut(){
+function LogOut() {
   signOut(auth)
 }
 
 function Root() {
+  const [isSuperAdmin, setIsSuperAdmin] = React.useState(false)
+
+  let isSuperAdminAux = false
+
+  const dbRef = ref(database, "users/");
+
+  onValue(dbRef, (data) => {
+    if (!data.exists()) {
+    }
+    data.forEach((element) => {
+      if (element.val().email === user.email) {
+        isSuperAdminAux = element.val().superAdmin
+      }
+    })
+    setIsSuperAdmin(isSuperAdminAux)
+  }, { onlyOnce: true });
+  
   return (
     <Drawer.Navigator initialRouteName='Home'>
       <Drawer.Screen name="Home" component={HomePage} options={{ headerTitleAlign: "center", }} />
-      <Drawer.Screen name="ShedulingList" component={ShedulingList} options={{ headerTitleAlign: "center", title:"Agendados" }}/>
-      <Drawer.Screen name="Sair" component={LogOut}/>
+      <Drawer.Screen name="ShedulingList" component={ShedulingList} options={{ headerTitleAlign: "center", title: "Agendados" }} />
+      {isSuperAdmin && <Drawer.Screen name="Authorization" component={AuthorizationPage} options={{ headerTitleAlign: "center", title: "Authorization" }} />}
+      <Drawer.Screen name="Sair" component={LogOut} />
     </Drawer.Navigator>
   );
 }
@@ -36,7 +55,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="Root" component={Root} options={{ headerShown: false }} />
-        <Stack.Screen name="Sheduling" component={Sheduling} options={{ title: "Agendamento" , headerTitleAlign: "center"}} />
+        <Stack.Screen name="Sheduling" component={Sheduling} options={{ title: "Agendamento", headerTitleAlign: "center" }} />
       </Stack.Navigator>
 
 

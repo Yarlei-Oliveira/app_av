@@ -1,6 +1,7 @@
 import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { auth } from '../firebase'
+import { auth, database } from '../firebase'
+import { ref, set } from "firebase/database";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 
 var user = "";
@@ -11,6 +12,14 @@ const LoginPage = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isRegister, setIsRegister] = useState(false)
 
+    function writeUserData(user) {
+        set(ref(database, "users/" + user.uid + "/"), {
+            email: user.email,
+            superAdmin: false,
+            admin: false,
+        });
+    }
+
     //Registrar
     const handleSignUp = () => {
         if (email === "" || email === null || password === "" || password === null) return alert("Algum dos campos esta nulo")
@@ -18,7 +27,8 @@ const LoginPage = ({ navigation }) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredentials) => {
                 user = userCredentials.user;
-                console.log(user.email);
+                console.log(user);
+                writeUserData(user)
             })
             .catch((e) => {
                 alert(e.message)
