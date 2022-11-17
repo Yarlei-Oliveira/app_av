@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import LoginPage from './pages/loginPage';
+import LoginPage, { user } from './pages/loginPage';
 import HomePage from './pages/homePage/homePage';
 import Sheduling from './pages/schedulingPage/sheduling';
 import ShedulingList from './pages/homePage/components/drawer/shedulingList/shedulingList';
@@ -10,7 +10,6 @@ import { auth } from './firebase';
 import { signOut } from 'firebase/auth';
 import { ref, onValue } from "firebase/database";
 import { database } from './firebase';
-import { user } from './pages/loginPage';
 import AuthorizationPage from './pages/homePage/components/drawer/authorization/authorizationPage';
 
 
@@ -24,7 +23,7 @@ function LogOut() {
 function Root() {
   const [isSuperAdmin, setIsSuperAdmin] = React.useState(false)
 
-  let isSuperAdminAux = false
+  let isSuperAdminAux = true
 
   const dbRef = ref(database, "users/");
 
@@ -32,7 +31,8 @@ function Root() {
     if (!data.exists()) {
     }
     data.forEach((element) => {
-      if (element.val().email === user.email) {
+      if (element.val().id === user.uid) {
+        console.log(element.val().superAdmin)
         isSuperAdminAux = element.val().superAdmin
       }
     })

@@ -1,8 +1,10 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { auth } from '../../firebase'
+import { auth, database } from '../../firebase'
 import Card from './components/card'
 import { servicesCars } from '../../const/var'
+import { user } from '../loginPage'
+import { onValue, ref, set } from 'firebase/database'
 
 
 const HomePage = ({ navigation }) => {
@@ -14,16 +16,33 @@ const HomePage = ({ navigation }) => {
       listItems: listServices
     })
   }
-  const handleSingOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login")
-      })
-      .catch((err) => {
-        alert(err.message)
-      })
+  function writeUserData() {
+    set(ref(database, "users/" + user.uid), {
+      email: user.email,
+      id: user.uid,
+      admin: false,
+      superAdmin: false
+    });
+}
+
+const dbRef = ref(database, "users/");
+onValue(dbRef, (data) => {
+  if (!data.exists()) {
+    return
   }
+  let listIds = []
+  data.forEach((element) => {
+    listIds.push(element.val().id)
+  })
+  if(listIds.includes(user.uid)){
+    return
+  }else{
+    writeUserData()
+  }
+}, {onlyOnce: true});
+
+
+
   return (
     <View style={styles.homePageView}>
       <View style={styles.cards}>

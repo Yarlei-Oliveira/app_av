@@ -6,24 +6,34 @@ import { database } from '../../../../../firebase';
 import CardAuthorization from './components/cardAuthorization';
 
 const AuthorizationPage = () => {
-    var usersList = []
     const [users, setUsers] = useState([])
+
+    var usersAux = []
 
     const dbRef = ref(database, "users/");
     onValue(dbRef, (data) => {
         if (!data.exists()) {
+            return
         }
         data.forEach((element) => {
-            usersList.push(element.val())
+            usersAux.push({
+                email: element.val().email,
+                id: element.val().id,
+                superAdmin: element.val().superAdmin,
+                admin: element.val().admin
+            })
         })
-        setUsers(usersList.reverse())
-    }, { onlyOnce: true });
-
+        setUsers(usersAux)
+    },{onlyOnce: true});
+        
     return (
         <View style={styles.AuthorizationContainer}>
             {users.map((element) => 
             <CardAuthorization
                 email = {element.email}
+                uid = {element.id}
+                isSuperAdmin = {element.superAdmin}
+                isAdmin = {element.admin}
             />)}
         </View>
     )
