@@ -11,6 +11,7 @@ import { signOut } from 'firebase/auth';
 import { ref, onValue } from "firebase/database";
 import { database } from './firebase';
 import AuthorizationPage from './pages/homePage/components/drawer/authorization/authorizationPage';
+import NewOficina from './pages/homePage/components/drawer/new_oficina/new_oficina';
 
 
 const Drawer = createDrawerNavigator();
@@ -22,8 +23,10 @@ function LogOut() {
 
 function Root() {
   const [isSuperAdmin, setIsSuperAdmin] = React.useState(false)
+  const [isAdmin, setIsAdmin] = React.useState(false)
 
   let isSuperAdminAux = true
+  let isAdminAux = true
 
   const dbRef = ref(database, "users/");
 
@@ -34,16 +37,19 @@ function Root() {
       if (element.val().id === user.uid) {
         console.log(element.val().superAdmin)
         isSuperAdminAux = element.val().superAdmin
+        isAdminAux = element.val().admin
       }
     })
     setIsSuperAdmin(isSuperAdminAux)
+    setIsAdmin(isAdminAux)
   }, { onlyOnce: true });
   
   return (
     <Drawer.Navigator initialRouteName='Home'>
       <Drawer.Screen name="Home" component={HomePage} options={{ headerTitleAlign: "center", }} />
       <Drawer.Screen name="ShedulingList" component={ShedulingList} options={{ headerTitleAlign: "center", title: "Agendados" }} />
-      {isSuperAdmin && <Drawer.Screen name="Authorization" component={AuthorizationPage} options={{ headerTitleAlign: "center", title: "Authorization" }} />}
+      {isAdmin && <Drawer.Screen name='Adicionar Oficina' component={NewOficina} options={{ headerTitleAlign: "center", title: "Adicionar Oficina" }}/>}
+      {isSuperAdmin && <Drawer.Screen name="Authorization" component={AuthorizationPage} options={{ headerTitleAlign: "center", title: "Autorizacão" }} />}
       <Drawer.Screen name="Sair" component={LogOut} />
     </Drawer.Navigator>
   );
