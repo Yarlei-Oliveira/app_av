@@ -7,15 +7,18 @@ const CardAuthorization = (props) => {
 
     const [isSuperAdmin, setIsSuperAdmin] = useState(props.isSuperAdmin)
     const [isAdmin, setIsAdmin] = useState(props.isAdmin)
+    
 
-
-    function writeUserData() {
+    function writeUserData(boolAdmin, boolSuperAdmin) {
+        //console.log("passo por aqui  " + boolAdmin + " . " + boolSuperAdmin)
         set(ref(database, "users/" + props.uid), {
-          admin: isAdmin,
+          admin: boolAdmin,
           email: props.email,
           id: props.uid,
-          superAdmin: isSuperAdmin
+          superAdmin: boolSuperAdmin
         });
+        setIsSuperAdmin(boolSuperAdmin)
+        setIsAdmin(boolAdmin)
     }
 
     return (
@@ -25,28 +28,20 @@ const CardAuthorization = (props) => {
                 <View style={styles.options}>
                     <Text>Super Admin</Text>
                     <Switch
-                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                        thumbColor={isSuperAdmin ? "#f5dd4b" : "#f4f3f4"}
+                        key={1}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => {
-                            setIsSuperAdmin(!isSuperAdmin)
-                            writeUserData()
-                        }}
-                        value={props.isSuperAdmin}
+                        onValueChange={() => writeUserData(isAdmin, !isSuperAdmin)}
+                        value={isSuperAdmin}
                     >
                     </Switch>
                 </View>
                 <View style={styles.options}>
                     <Text>Admin</Text>
                     <Switch
-                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                        thumbColor={isAdmin ? "#f5dd4b" : "#f4f3f4"}
+                        key={2}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => {
-                            setIsAdmin(!isAdmin)
-                            writeUserData()
-                        }}
-                        value={props.isAdmin}
+                        onValueChange={() => writeUserData(!isAdmin, isSuperAdmin)}
+                        value={isAdmin}
                     />
                 </View>
             </View>
